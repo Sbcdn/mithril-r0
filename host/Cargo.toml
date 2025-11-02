@@ -1,0 +1,14 @@
+[package]
+name = "host"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.94"
+methods = { path = "../methods" }
+risc0-zkvm = { version = "^3.0.3", features=["prove","std"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+serde = "1.0"
+
+tokio = { version = "1.43.0", features = ["rt-multi-thread", "full"] }
+mithril-dwarf = { path="../../mithril-dwarf", features = ["host"]}

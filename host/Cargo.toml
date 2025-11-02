@@ -11,4 +11,4 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 serde = "1.0"
 
 tokio = { version = "1.43.0", features = ["rt-multi-thread", "full"] }
-mithril-dwarf = { path="../../mithril-dwarf", features = ["host"]}
+mithril-dwarf ={ git = "https://github.com/Sbcdn/mithril-dwarf.git", branch = "main", features = ["host"]}

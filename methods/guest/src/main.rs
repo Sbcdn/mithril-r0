@@ -4,7 +4,7 @@ use risc0_zkvm::guest::env;
 fn main() {
     // read the genesis key
     let start = env::cycle_count();
-    let mut genesis_key = vec![0u8; 32];
+    let mut genesis_key = [0u8; 32];
     env::read_slice(&mut genesis_key);
     let end = env::cycle_count();
     eprintln!("read genesis key: {}", end - start);
@@ -33,7 +33,7 @@ fn main() {
 
     // Business Logic
     let start = env::cycle_count();
-    verify_standard_certificate(&cert, &prev_cert).expect(&format!(
+    verify_certificate(&cert, Some(&prev_cert), &genesis_key).expect(&format!(
         "Failed to verify certificate 1, hash: '{:?}' against predecessor certificate 2, hash: '{:?}'",
         cert.hash, prev_cert.hash
     ));

@@ -18,7 +18,7 @@ fn main() {
     eprintln!("read certificate 1: {}", end - start);
 
     let start = env::cycle_count();
-    let cert = certificate_from_bytes_fast(&input_1).expect("Failed to parse certificate 1");
+    let cert = certificate_from_bytes(&input_1).expect("Failed to parse certificate 1");
     let end = env::cycle_count();
     eprintln!("parse certificate 1: {}", end - start);
 
@@ -27,7 +27,7 @@ fn main() {
     let len: usize = env::read();
     let mut input_2 = vec![0u8; len];
     env::read_slice(&mut input_2);
-    let prev_cert = certificate_from_bytes_fast(&input_2).expect("Failed to parse certificate 2");
+    let prev_cert = certificate_from_bytes(&input_2).expect("Failed to parse certificate 2");
     let end = env::cycle_count();
     eprintln!("read and parse certificate 2: {}", end - start);
 

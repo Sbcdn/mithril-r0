@@ -3,10 +3,9 @@
 use anyhow::anyhow;
 use anyhow::Error as AppError;
 use methods::{OAKSHIELD_ELF, OAKSHIELD_ID};
-use mithril_dwarf::parser::byte_parser_writer::certificate_to_bytes_opt;
 use mithril_dwarf::{
-    CardanoTransactionsProofs, Certificate, Client, ClientBuilder, Ed25519VerificationKey,
-    MithrilCertificate,
+    parser::certificate_to_bytes, CardanoTransactionsProofs, Certificate, Client, ClientBuilder,
+    Ed25519VerificationKey, MithrilCertificate,
 };
 use risc0_zkvm::ProverOpts;
 use risc0_zkvm::{default_prover, ExecutorEnv};
@@ -56,10 +55,10 @@ async fn main() {
         .unwrap();
 
     let c: Certificate = certificate.clone().try_into().unwrap();
-    let parsed_bytes_opt = certificate_to_bytes_opt(&c);
+    let parsed_bytes_opt = certificate_to_bytes(&c);
 
     let p = previous_cert.clone().try_into().unwrap();
-    let perv_cert_parsed_bytes_opt = certificate_to_bytes_opt(&p);
+    let perv_cert_parsed_bytes_opt = certificate_to_bytes(&p);
 
     // An executor environment describes the configurations for the zkVM
     // including program inputs.

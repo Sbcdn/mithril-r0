@@ -6,10 +6,40 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.94"
 methods = { path = "../methods" }
+methods_comp = { path = "../methods_comp" }
+oakshield_common = { path = "../oakshield_common", features = ["std"] }
 risc0-zkvm = { version = "^3.0.3", features=["prove","std"] }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 serde = "1.0"
+serde_json = "*"
 
 tokio = { version = "1.43.0", features = ["rt-multi-thread", "full"] }
-#mithril-dwarf ={ path = "../../mithril-dwarf", features = ["host"] }
-mithril-dwarf ={ git = "https://github.com/Sbcdn/mithril-dwarf.git", branch = "main", features = ["host"]}
+async-trait = "0.1.89"
+mithril-dwarf ={ path = "../../mithril-dwarf", features = ["host"] }
+#mithril-dwarf ={ git = "https://github.com/Sbcdn/mithril-dwarf.git", branch = "main", features = ["host"]}
+
+# CLI
+clap = { version = "4", features = ["derive", "env"] }
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# Progress bars
+indicatif = "0.17"
+
+# Logging
+env_logger = "0.11"
+log = "0.4"
+slog ={ version= "2.8.2"}
+hex = "*"
+
+# Serializing for file storage
+bincode ={ version= "1.3" }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+
+[profile.dev]
+opt-level = 1

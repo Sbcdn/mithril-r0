@@ -15,8 +15,8 @@ serde_json = "*"
 
 tokio = { version = "1.43.0", features = ["rt-multi-thread", "full"] }
 async-trait = "0.1.89"
-mithril-dwarf ={ path = "../../mithril-dwarf", features = ["host"] }
-#mithril-dwarf ={ git = "https://github.com/Sbcdn/mithril-dwarf.git", branch = "main", features = ["host"]}
+#mithril-dwarf ={ path = "../../mithril-dwarf", features = ["host"] }
+mithril-dwarf ={ git = "https://github.com/Sbcdn/mithril-dwarf.git", branch = "cleanup", features = ["host"]}
 
 # CLI
 clap = { version = "4", features = ["derive", "env"] }

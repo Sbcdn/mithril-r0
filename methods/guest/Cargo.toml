@@ -7,8 +7,8 @@ edition = "2021"
 
 [dependencies]
 risc0-zkvm = { version = "^3.0.3", default-features = false, features = ['std'] }
-mithril-dwarf ={ path = "../../../mithril-dwarf"}
-#mithril-dwarf ={ git = "https://github.com/Sbcdn/mithril-dwarf.git", branch = "main" }
+#mithril-dwarf ={ path = "../../../mithril-dwarf"}
+mithril-dwarf ={ git = "https://github.com/Sbcdn/mithril-dwarf.git", branch = "cleanup" }
 hex = "*"
 
 [patch.crates-io]

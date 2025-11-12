@@ -301,7 +301,7 @@ impl ParallelProver {
         C: CertificateProver,
     {
         let mut receipts = Vec::new();
-        let prover = default_prover();
+        let mut prover = default_prover();
 
         for (current_hash, previous_hash, cert) in certificates.iter() {
             worker_pb.set_message(format!("Cert {}", worker_id));
@@ -407,7 +407,8 @@ impl ParallelProver {
 
         let env = env_builder.build()?;
 
-        let prove_info = prover.prove(env, elf)?;
+        let opts = ProverOpts::groth16();
+        let prove_info = prover.prove_with_opts(env, elf, &opts)?;
         let receipt = prove_info.receipt;
 
         let journal_bytes = &receipt.journal.bytes;

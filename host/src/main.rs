@@ -24,6 +24,8 @@ use methods::OAKSHIELD_ELF;
 use methods_comp::OAKSHIELD_COMP_ELF;
 use mithril_dwarf::{parser::certificate_to_bytes, Certificate, CertificateVerifier};
 
+use risc0_zkvm::guest::env;
+
 #[derive(Parser)]
 #[command(name = "mithril-prover")]
 #[command(version = "0.1.0")]
@@ -263,7 +265,7 @@ fn print_summary(
     println!("\n📦 Proof:");
     println!("  Size: {} bytes", proof_size);
     println!("  Format: Groth16");
-    println!("\n✅ Ready for BitVM2 verification!");
+    println!("\n✅ Ready for verification!");
 }
 
 fn format_hash(hash: &[u8; 32]) -> String {

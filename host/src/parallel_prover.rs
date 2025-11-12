@@ -6,12 +6,14 @@ use indicatif::{MultiProgress, ProgressBar, ProgressStyle};
 use log::{debug, error, info};
 use mithril_dwarf::Ed25519VerificationKey;
 use oakshield_common::{CertificateStepOutput, ChainProofOutput};
-use risc0_zkvm::{default_prover, ExecutorEnv, ProverOpts, Receipt};
+use risc0_zkvm::{default_prover, Digest, ExecutorEnv, ProverOpts, Receipt};
 use std::fs::{self, File};
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 use std::time::Instant;
 use tokio::task;
+
+use methods::{OAKSHIELD_ELF, OAKSHIELD_ID};
 
 /// Receipt with metadata for tracking
 #[derive(Debug, Clone)]
@@ -301,7 +303,6 @@ impl ParallelProver {
         C: CertificateProver,
     {
         let mut receipts = Vec::new();
-        let mut prover = default_prover();
 
         for (current_hash, previous_hash, cert) in certificates.iter() {
             worker_pb.set_message(format!("Cert {}", worker_id));
@@ -320,7 +321,7 @@ impl ParallelProver {
             let result = loop {
                 attempt += 1;
 
-                match Self::prove_single_certificate(genesis_key, prev_cert, cert, elf, &prover) {
+                match Self::prove_single_certificate(genesis_key, prev_cert, cert, elf) {
                     Ok(receipt) => break Ok(receipt),
                     Err(_) if config.retry_on_failure && attempt < config.max_retries => {
                         worker_pb.set_message(format!(
@@ -371,7 +372,6 @@ impl ParallelProver {
         prev_cert: Option<&C>,
         cert: &C,
         elf: &[u8],
-        prover: &impl risc0_zkvm::Prover,
     ) -> Result<CertificateReceipt>
     where
         C: CertificateProver,
@@ -407,7 +407,8 @@ impl ParallelProver {
 
         let env = env_builder.build()?;
 
-        let opts = ProverOpts::groth16();
+        let prover = default_prover();
+        let opts = ProverOpts::succinct();
         let prove_info = prover.prove_with_opts(env, elf, &opts)?;
         let receipt = prove_info.receipt;
 
@@ -476,7 +477,7 @@ impl ParallelProver {
 
         // Prove composition with Groth16
         let prover = default_prover();
-        let opts = ProverOpts::groth16();
+        let opts = ProverOpts::groth16().with_control_ids(vec![Digest::from(OAKSHIELD_ID)]);
         let prove_info = prover.prove_with_opts(env, composition_elf, &opts)?;
         let receipt = prove_info.receipt;
 
